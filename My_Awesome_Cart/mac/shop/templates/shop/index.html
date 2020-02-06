@@ -60,7 +60,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{i.product_name}}</h5>
                 <p class="card-text">{{i.desc}}</p>
-                <button  id="pr{{i.id}}" class="btn btn-primary cart ">Add to cart</button>
+                <button  id="pr{{i.id}}" class="btn btn-primary mycart">Add to cart</button>
               </div>
             </div>
           </div>
@@ -87,27 +87,37 @@
 
 {% block js %}
 <script>
-    console.log('working')
-    if (localStorage.getItem('cart') == null){
-      var cart = {};
+
+    if (localStorage.getItem('mycart') == null)
+    {
+      console.log('if');
+      var mycart = {};
     }
     else
     {
-      cart = JSON.parse(localStorage.getItem('cart'));
+      console.log('else');
+      mycart = JSON.parse(localStorage.getItem('mycart'));
+      document.getElementById('mycart').innerHTML = Object.keys(mycart).length;
     }
-    $('.cart').click(function(){
-      console.log('clicked');
+
+    $('.mycart').click(function()
+    {
       var idstr = this.id.toString();
       console.log(idstr);
-      if (cart[idstr] != undefined){
-        cart[idstr] = cart[idstr]+1;
+
+      if (mycart[idstr] == undefined)
+      {
+        mycart[idstr] = 1;
       }
       else
       {
-        cart[idstr]=1;
+        mycart[idstr] = mycart[idstr]+1;
       }
-      console.log(cart);
-      localStorage.setItem('cart',JSON.stringify(cart));
+
+      localStorage.setItem('mycart',JSON.stringify(mycart));
+      document.getElementById('mycart').innerHTML = Object.keys(mycart).length;
+      console.log(mycart);
     });
+
 </script>
 {% endblock %}
