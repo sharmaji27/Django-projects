@@ -5,9 +5,9 @@
                 display:inline-block;
                 margin-left:-4px;
                 }
-      .col-md-3-img{
-                  width:100%;
-                  height:auto;
+      .col-md-3 img{
+                  max-width: 227px;
+                  height: 242px;
                   }
       body .carousel-indicator li{
                   background-color:blue;
@@ -52,29 +52,19 @@
       <div class="container carousel-inner no-padding">
         <!-- first slideshow window -->
         <div class="carousel-item active">
-          <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-              <img src="/media/{{products.0.image }}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{products.0.product_name}}</h5>
-                <p class="card-text">{{products.0.desc}}</p>
-                <a href="#" class="btn btn-primary">Add to cart</a>
-              </div>
-            </div>
-          </div>
 
-          {% for i in products|slice:"1:"%}
+          {% for i in products %}
           <div class="col-xs-3 col-sm-3 col-md-3">
             <div class="card" style="width: 18rem;">
               <img src="/media/{{i.image}}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">{{i.product_name}}</h5>
                 <p class="card-text">{{i.desc}}</p>
-                <a href="#" class="btn btn-primary">Add to Cart</a>
+                <button  id="pr{{i.id}}" class="btn btn-primary cart ">Add to cart</button>
               </div>
             </div>
           </div>
-            {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+            {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
         </div><div class="carousel-item">
             {% endif %}
           {% endfor %}
@@ -92,5 +82,32 @@
       <span class="carousel-control-next-icon"></span>
     </a>
 {%endfor%}
-{% endblock %}
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    console.log('working')
+    if (localStorage.getItem('cart') == null){
+      var cart = {};
+    }
+    else
+    {
+      cart = JSON.parse(localStorage.getItem('cart'));
+    }
+    $('.cart').click(function(){
+      console.log('clicked');
+      var idstr = this.id.toString();
+      console.log(idstr);
+      if (cart[idstr] != undefined){
+        cart[idstr] = cart[idstr]+1;
+      }
+      else
+      {
+        cart[idstr]=1;
+      }
+      console.log(cart);
+      localStorage.setItem('cart',JSON.stringify(cart));
+    });
+</script>
+{% endblock %}
