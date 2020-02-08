@@ -3,11 +3,11 @@
 {% block css %}
       .col-md-3{
                 display:inline-block;
-                margin-left:-4px;
+                margin-left:5px;
                 }
       .col-md-3 img{
-                  max-width: 227px;
-                  height: 242px;
+                  width: 170px;
+                  height: 200px;
                   }
       body .carousel-indicator li{
                   background-color:blue;
@@ -27,6 +27,8 @@
       .carousel-control-next{
                              top:auto;
                              bottom:auto;
+                             padding-top:200px;
+                             padding-right:80px;
                             }
       body .no-padding{
                        padding-left:0;
@@ -40,8 +42,9 @@
 <div class="container">
     <!-- Slideshow starts here -->
     {% for products,range,nSlides in allprods %}
-    <h4 class="my-4">Flash Sale on {{products.0.category}}</h4>
-  <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">
+    <h4 class="my-4 " style="padding-left: 20px;">Flash Sale on Fashion - Recommended Items</h4>
+    <div class="row">
+  <div id="demo{{forloop.counter}}" class=" col carousel slide my-3" data-ride="carousel">
     <ul class="carousel-indicators">
       <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
         {%for i in range%}
@@ -59,8 +62,9 @@
               <img src="/media/{{i.image}}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">{{i.product_name}}</h5>
-                <p class="card-text">{{i.desc}}</p>
+                <p class="card-text">{{i.desc|slice:"0:68"}}...</p>
                 <button  id="pr{{i.id}}" class="btn btn-primary mycart">Add to cart</button>
+                <a href="/shop/products/{{i.id}}"><button  id="qv{{i.id}}" class="btn btn-primary mycart">Quick View</button></a>
               </div>
             </div>
           </div>
@@ -81,6 +85,7 @@
     <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
       <span class="carousel-control-next-icon"></span>
     </a>
+    </div>
 {%endfor%}
 </div>
 {% endblock %}
@@ -118,6 +123,9 @@
       document.getElementById('mycart').innerHTML = Object.keys(mycart).length;
       console.log(mycart);
     });
+    $('#popcart').popover()
+    document.getElementById('popcart').setAttribute('data-content','<h5>Cart</h5>')
+
 
 </script>
 {% endblock %}
