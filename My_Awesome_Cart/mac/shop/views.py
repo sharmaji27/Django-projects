@@ -42,4 +42,4 @@ def search(request):
     return HttpResponse('we are in search section')
 
 def checkout(request):
-    return HttpResponse('we are in checkout section')
+    return render(request,'shop/checkout.html')

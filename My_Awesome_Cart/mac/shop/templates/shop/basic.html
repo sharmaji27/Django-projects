@@ -64,9 +64,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  {% block js %} {% endblock %}
   </body>
 
+{% block js %} {% endblock %}
   <script>
 
       if (localStorage.getItem('mycart') == null)
@@ -78,25 +78,26 @@
         mycart = JSON.parse(localStorage.getItem('mycart'));
         sum = 0
         for (var item in mycart){
-          sum = sum + mycart[item]
+          sum = sum + mycart[item][0]
         }
         document.getElementById('mycart').innerHTML = sum;
       }
 
-      $('.mycart').click(function()
+
+      // when the add to cart button is clicked add/increment the product
+      $('.divpr').on('click','button.mycart',function()
       {
         var idstr = this.id.toString();
-        console.log(idstr);
-
         if (mycart[idstr] == undefined)
-        {
-          mycart[idstr] = 1;
-        }
+         {
+           qty = 1;
+           name = document.getElementById('name'+idstr).innerHTML;
+           mycart[idstr] = [qty,name];
+         }
         else
         {
-          mycart[idstr] = mycart[idstr]+1;
+          qty = mycart[idstr][0] + 1;
         }
-
 
         localStorage.setItem('mycart',JSON.stringify(mycart));
       });
